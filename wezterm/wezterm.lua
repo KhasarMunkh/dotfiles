@@ -27,7 +27,7 @@ return {
   default_domain = "WSL:Ubuntu",
   font = wezterm.font 'Hack Nerd Font',
   font_size = 13.0,
-  color_scheme = 'Catppuccin Mocha',
+  color_scheme = 'Catppuccin Macchiato',
   colors = {
     tab_bar = {
       background = '#1E1E2E',

@@ -7,6 +7,8 @@ fi
 fpath+=("${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-completions/src")
 # (no manual compinit – OMZ will handle it)
 
+export PATH="/snap/bin:$PATH"
+
 # --- Oh My Zsh core ---
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="powerlevel10k/powerlevel10k"
@@ -24,3 +26,4 @@ if [[ $- == *i* ]]; then
   [[ -s "$NVM_DIR/nvm.sh"        ]] && . "$NVM_DIR/nvm.sh"
   [[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 fi
+export PATH="$HOME/go/bin:$PATH"

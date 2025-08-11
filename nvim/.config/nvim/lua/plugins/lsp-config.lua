@@ -22,6 +22,37 @@ return {
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
             })
+            lspconfig.eslint.setup({
+                capabilities = capabilities,
+                settings = {
+                    format = { enable = true },
+                    codeAction = { disableRuleComment = { location = "separateLine" } },
+                    packageManager = "npm",
+                    formatters = {
+                        prettier = {
+                            command = "prettier",
+                            args = { "--stdin-filepath", "%filepath" },
+                        },
+                    },
+                },
+            })
+            --please add tailwindcss ls
+            -- setup tailwindcss language server
+            lspconfig.tailwindcss.setup({
+                capabilities = capabilities,
+                filetypes = { "html", "javascript", "typescript"},
+            })
+            --setup emmet language server
+            lspconfig.emmet_language_server.setup({
+                capabilities = capabilities,
+                filetypes = {"html", "javascript"},
+            })
+            lspconfig.tsserver.setup({
+                capabilities = capabilities,
+            })
+            lspconfig.html.setup({
+                capabilities = capabilities,
+            })
             lspconfig.ts_ls.setup({
                 capabilities = capabilities,
             })
