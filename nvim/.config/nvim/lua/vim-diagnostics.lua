@@ -50,3 +50,10 @@ vim.diagnostic.config({
   update_in_insert = false, -- don’t flicker while typing
   severity_sort = true,
 })
+
+vim.api.nvim_create_user_command("ToggleDiagnostics", function()
+  local current = vim.diagnostic.config().virtual_text
+  vim.diagnostic.config({ virtual_text = not current })
+end, { desc = "Toggle inline diagnostics" })
+
+vim.keymap.set("n", "<leader>d", "<cmd>ToggleDiagnostics<cr>", { desc = "Toggle inline diagnostics" })
