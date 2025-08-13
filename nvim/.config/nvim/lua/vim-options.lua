@@ -9,7 +9,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     command = "retab",
 })
 
-
 vim.g.mapleader = " "
 
 vim.opt.termguicolors = true
@@ -39,7 +38,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end,
 })
 
+-- Split here, keep char under cursor before the break
+vim.keymap.set("n", "<leader>o", "i<CR><Esc>", { desc = "Split line at cursor" })
 
+-- Split after cursor (char under cursor goes to next line)
+vim.keymap.set("n", "<leader>O", "a<CR><Esc>", { desc = "Split line after cursor" })
 
 vim.keymap.set('n', '<c-k>', ':wincmd k<CR>')
 vim.keymap.set('n', '<c-j>', ':wincmd j<CR>')
@@ -51,6 +54,7 @@ vim.keymap.set('n', '<CR>', 'm`o<Esc>``') -- Enter insert mode below the current
 
 vim.keymap.set('n', '<leader>h', ':split<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<leader>v', ':vsplit<CR>', { noremap = true, silent = true })
+-- create new window with the current file, the default keymap is <leader>n
 
 -- Center the screen when scrolling
 

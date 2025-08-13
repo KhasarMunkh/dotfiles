@@ -22,7 +22,7 @@ return {
                     end,
                 },
                 completion = {
-                    keyword_length = 3, -- Minimum word length to trigger completion
+                    keyword_length = 1, -- Minimum word length to trigger completion
                 },
                 window = {
                     completion = cmp.config.window.bordered(),

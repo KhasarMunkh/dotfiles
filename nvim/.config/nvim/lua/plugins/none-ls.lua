@@ -8,7 +8,16 @@ return {
         null_ls.builtins.formatting.stylua,
         -- JavaScript/TypeScript
         -- 
-        null_ls.builtins.formatting.prettier,
+        null_ls.builtins.formatting.prettier.with({
+            filetypes = {
+                "javascript",
+                "typescript",
+                -- "javascriptreact",
+                -- "typescriptreact",
+                "css",
+            },
+          prefer_local = "node_modules/.bin", -- Use local prettier if available
+        }),
         null_ls.builtins.formatting.clang_format,
 
         -- Golang

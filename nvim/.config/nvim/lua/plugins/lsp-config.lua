@@ -5,9 +5,17 @@ return {
     },
     {
         "mason-org/mason-lspconfig.nvim",
-        --        opts = {
-        --           ensure_installed = { "lua_ls", "ts_ls", "gopls" }
-        --      },
+        opts = {
+            ensure_installed = {
+                "lua_ls",
+                "ts_ls",
+                "gopls",
+                "tailwindcss",
+                "emmet_language_server",
+                "eslint",
+                "html",
+            }
+        },
         dependencies = {
             { "mason-org/mason.nvim", opts = {} },
             "neovim/nvim-lspconfig",
@@ -19,6 +27,7 @@ return {
         config = function()
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local lspconfig = require("lspconfig")
+
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
             })
@@ -62,18 +71,41 @@ return {
             lspconfig.tailwindcss.setup({
                 capabilities = capabilities,
                 filetypes = { "html", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
+                root_dir = lspconfig.util.root_pattern("tailwind.config.js", "tailwind.config.ts", "postcss.config.js",
+                    "postcss.config.ts"),
+                settings = {
+                    tailwindCSS = {
+                        validate = true,
+                        experimental = {
+                            classRegex = {
+                                { "class(?:Name)?=\"([^\"]*)\"" },                                                                   -- class="..."
+                                { "class(?:Name)?=\\{`([^`]*)`\\}", "class(?:Name)?=\\{\\\"([^\\\"]*)\\\"\\}" },                     -- className={`...`} / {"..."}
+                                { "clsx\\(([^\\)]*)\\)",            "classnames\\(([^\\)]*)\\)",              "cn\\(([^\\)]*)\\)" }, -- clsx()/cn()
+                                { "tw`([^`]*)`",                    "tw=\"([^\"]*)\"" },                                             -- twin / tw=""
+                                { "cva\\(([^\\)]*)\\)" },                                                                            -- cva({...})
+                            },
+                        },
+                        colorDecorators = {
+                            enable = true,
+                        },
+                    }
+
+                }
             })
             --setup emmet language server
             lspconfig.emmet_language_server.setup({
                 capabilities = capabilities,
-                filetypes = {"html", "javascript"},
+                filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", },
             })
-            lspconfig.tsserver.setup({
-                capabilities = capabilities,
-            })
+
+            -- lspconfig.tsserver.setup({
+            --     capabilities = capabilities,
+            -- })
+
             lspconfig.html.setup({
                 capabilities = capabilities,
             })
+
             lspconfig.ts_ls.setup({
                 capabilities = capabilities,
             })
