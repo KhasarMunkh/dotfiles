@@ -5,7 +5,7 @@ return {
             init = function()
                 require("hover.providers.lsp")
             end,
-            preview_opts = { 
+            preview_opts = {
                 border = "rounded",
                 max_width = math.floor(vim.o.columns * 0.6),
                 max_height = math.floor(vim.o.lines * 0.6),

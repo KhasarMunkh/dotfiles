@@ -18,6 +18,7 @@ return {
             },
           prefer_local = "node_modules/.bin", -- Use local prettier if available
         }),
+
         null_ls.builtins.formatting.clang_format,
 
         -- Golang

@@ -1,7 +1,5 @@
 return {
-    {
-        "hrsh7th/cmp-nvim-lsp"
-    },
+    { "hrsh7th/cmp-nvim-lsp"},
     {
         "L3MON4D3/LuaSnip",
         dependencies = {
@@ -9,6 +7,9 @@ return {
             "rafamadriz/friendly-snippets",
         },
     },
+    {"hrsh7th/cmp-buffer"},
+    {"hrsh7th/cmp-path"},
+    {"roobert/tailwindcss-colorizer-cmp.nvim"},
     {
         "hrsh7th/nvim-cmp",
         config = function()

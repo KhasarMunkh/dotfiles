@@ -34,32 +34,16 @@ return {
             lspconfig.cssls.setup({
                 capabilities = capabilities,
                 settings = {
-                    css = {
-                        validate = true, 
-                        lint = {
-                            unknownAtRules = "ignore",
-                        },
-                    },
-                    scss = {
-                        validate = true,
-                        lint = {
-                            unknownAtRules = "ignore",
-                        },
-                    },
-                    less = {
-                        validate = true,
-                        lint = {
-                            unknownAtRules = "ignore",
-                        },
-                    },
+                    css = {validate = true, lint = { unknownAtRules = "ignore", },},
+                    scss = {validate = true, lint = { unknownAtRules = "ignore", },},
+                    less = {validate = true, lint = { unknownAtRules = "ignore", },},
                 },
             })
             lspconfig.eslint.setup({
                 capabilities = capabilities,
                 settings = {
-                    format = { enable = true },
+                    format = { enable = false },
                     codeAction = { disableRuleComment = { location = "separateLine" } },
-                    packageManager = "npm",
                     formatters = {
                         prettier = {
                             command = "prettier",
@@ -75,7 +59,9 @@ return {
                     "postcss.config.ts"),
                 settings = {
                     tailwindCSS = {
-                        validate = true,
+                        classAttributes = {
+                            { "class", "className", }
+                        },
                         experimental = {
                             classRegex = {
                                 { "class(?:Name)?=\"([^\"]*)\"" },                                                                   -- class="..."
@@ -125,12 +111,12 @@ return {
                 capabilities = capabilities,
             })
             vim.keymap.set("n", "K", function()
-              vim.lsp.buf.hover()
-              vim.defer_fn(function()
-                if Snacks and Snacks.image and Snacks.image.hover then
-                  Snacks.image.hover()  -- shows image at a fixed spot / near cursor
-                end
-              end, 20)
+                vim.lsp.buf.hover()
+                vim.defer_fn(function()
+                    if Snacks and Snacks.image and Snacks.image.hover then
+                        Snacks.image.hover() -- shows image at a fixed spot / near cursor
+                    end
+                end, 20)
             end, { desc = "LSP Hover + Snacks.image" })
             -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
