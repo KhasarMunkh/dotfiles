@@ -63,3 +63,22 @@ vim.keymap.set('n', '<C-u>', '<C-u>zz')
 -- move cursor with scroll C-e, and C-u
 vim.keymap.set('n', '<C-e>', '<C-e>j')
 vim.keymap.set('n', '<C-y>', '<C-y>k')
+
+
+-- Quick new note (timestamped) in your notes dir
+vim.keymap.set("n", "<leader>nn", function()
+  local notes = vim.fs.normalize(vim.fn.expand("~/Notes"))
+  vim.fn.mkdir(notes, "p")
+  local name = os.date("!%Y-%m-%d") .. ".md"
+  vim.cmd.edit(notes .. "/" .. name)
+  vim.cmd([[normal! gg]])
+end, { desc = "Notes: New timestamped note" })
+
+vim.keymap.set("n", "<leader>nf", function()
+  require("telescope.builtin").find_files({ cwd = vim.fn.expand("~/Notes"), hidden = true })
+end, { desc = "Notes: Find file" })
+
+vim.keymap.set("n", "<leader>ng", function()
+  require("telescope.builtin").live_grep({ cwd = vim.fn.expand("~/Notes") })
+end, { desc = "Notes: Grep notes" })
+

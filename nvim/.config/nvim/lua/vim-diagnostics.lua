@@ -56,4 +56,4 @@ vim.api.nvim_create_user_command("ToggleDiagnostics", function()
   vim.diagnostic.config({ virtual_text = not current })
 end, { desc = "Toggle inline diagnostics" })
 
-vim.keymap.set("n", "<leader>d", "<cmd>ToggleDiagnostics<cr>", { desc = "Toggle inline diagnostics" })
+vim.keymap.set("n", "<leader>hd", "<cmd>ToggleDiagnostics<cr>", { desc = "Toggle inline diagnostics" })

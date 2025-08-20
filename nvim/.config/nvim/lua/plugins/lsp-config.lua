@@ -28,6 +28,19 @@ return {
             local capabilities = require("cmp_nvim_lsp").default_capabilities()
             local lspconfig = require("lspconfig")
 
+            lspconfig.pyright.setup({
+                capabilities = capabilities,
+                settings = {
+                    python = {
+                        analysis = {
+                            typeCheckingMode = "basic", -- "off", "basic", "strict"
+                            autoSearchPaths = true,
+                            useLibraryCodeForTypes = true,
+                        },
+                    },
+                },
+            })
+
             lspconfig.lua_ls.setup({
                 capabilities = capabilities,
             })
@@ -120,6 +133,7 @@ return {
             end, { desc = "LSP Hover + Snacks.image" })
             -- vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
+            vim.keymap.set("n", "<leader>gi", vim.lsp.buf.implementation, {})
             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
             vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, {})
