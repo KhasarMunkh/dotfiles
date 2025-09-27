@@ -4,7 +4,22 @@ return {
     config = function()
         local config = require("nvim-treesitter.configs")
         config.setup({
-            ensure_installed = { "lua", "python", "javascript", "c_sharp", "go", "markdown", "markdown_inline", "html", "css", "json", "bash"},
+            ensure_installed = {
+                "lua",
+                "python",
+                "javascript",
+                "typescript",
+                "tsx",
+                "c_sharp",
+                "go",
+                "markdown",
+                "markdown_inline",
+                "html",
+                "css",
+                "json",
+                "bash",
+                "svelte",
+            },
             highlight = { enable = true },
             indent = { enable = true },
             rainbow = {
@@ -13,5 +28,5 @@ return {
                 max_file_lines = nil,
             },
         })
-    end
+    end,
 }

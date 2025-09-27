@@ -1,35 +1,47 @@
--- lua/plugins/color.lua
+-- lua/plugins/colors.lua
 return {
-    {
-        "NvChad/nvim-colorizer.lua",
-        event = { "BufReadPre", "BufNewFile" },
-        opts = {
-            filetypes = { "css", "scss", "html", "javascript", "typescript", "javascriptreact", "typescriptreact" },
-            user_default_options = {
-                names = false,        -- disable "red"/"blue" named colors (noisy)
-                rgb_fn = true,        -- rgb(), rgba()
-                hsl_fn = true,        -- hsl()
-                tailwind = false,     -- we’ll handle Tailwind via the plugins below
-                mode = "virtualtext", -- "background" can be heavy; VT is clean
-            },
-        },
-        {
-            "roobert/tailwindcss-colorizer-cmp.nvim",
-            config = true,
-            dependencies = {
-                "hrsh7th/nvim-cmp"
-            },
-        },
-        {
-            "luckasRanarison/tailwind-tools.nvim",
-            ft = { "html", "css", "scss", "javascript", "typescript", "javascriptreact", "typescriptreact" },
-            dependencies = { "nvim-treesitter/nvim-treesitter" },
-            opts = {
-                document_color = {
-                    enabled = true, -- highlight Tailwind colors inline
-                    kind = "inline", -- "inline" (virt text) or "foreground"
-                },
-            },
-        }
-    }
+  -- 1) Inline color previews (incl. Tailwind classes)
+  {
+    "NvChad/nvim-colorizer.lua",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      filetypes = {
+        "css", "scss", "html",
+        "javascript", "typescript",
+        "javascriptreact", "typescriptreact",
+        "svelte",
+      },
+      user_default_options = {
+        names = false,        -- keep this off if you find it noisy
+        RGB = true,
+        RRGGBB = true,
+        RRGGBBAA = true,
+        rgb_fn = true,        -- rgb(), rgba()
+        hsl_fn = true,        -- hsl()
+        tailwind = true,      -- 👈 enable Tailwind color boxes
+        mode = "virtualtext", -- "background" is heavier; VT is lighter
+      },
+    },
+  },
+
+  -- 2) Tailwind colors in completion menu (requires nvim-cmp)
+  {
+    "roobert/tailwindcss-colorizer-cmp.nvim",
+    event = "InsertEnter",
+    dependencies = { "hrsh7th/nvim-cmp" },
+    config = true, -- just needs default cfg
+  },
+
+  -- 3) Smarter Tailwind doc colors + utilities
+  {
+    "luckasRanarison/tailwind-tools.nvim",
+    ft = { "html", "css", "scss", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      document_color = {
+        enabled = true,
+        kind = "virtualtext", -- inline (virt text) is nice; "foreground" also works
+      },
+    },
+  },
 }

@@ -8,17 +8,36 @@ return {
                 null_ls.builtins.formatting.stylua,
                 -- JavaScript/TypeScript
                 --
-                null_ls.builtins.formatting.prettier.with({
+                null_ls.builtins.formatting.prettierd.with({
                     filetypes = {
                         "javascript",
                         "typescript",
-                        -- "javascriptreact",
-                        -- "typescriptreact",
+                        "javascriptreact",
+                        "typescriptreact",
                         "css",
+                        "json",
+                        "markdown",
                     },
-                    prefer_local = "node_modules/.bin", -- Use local prettier if available
+                    env = { PRETTIERD_LOCAL_PRETTIER_ONLY = "1" }, -- prefer project prettier if present
                 }),
+                -- Fallback if prettierd isn't available:
+                -- null_ls.builtins.formatting.prettier.with({
+                --     filetypes = {
+                --         "javascript",
+                --         "typescript",
+                --         "javascriptreact",
+                --         "typescriptreact",
+                --         "css",
+                --         "json",
+                --         "markdown",
+                --     },
+                --     prefer_local = "node_modules/.bin",
+                --     condition = function(utils)
+                --         return not utils.is_executable("prettierd")
+                --     end,
+                -- }),
 
+                null_ls.builtins.formatting.csharpier,
                 null_ls.builtins.formatting.clang_format,
 
                 -- Golang
@@ -29,8 +48,7 @@ return {
                 -- Python
                 null_ls.builtins.formatting.ruff,
                 null_ls.builtins.diagnostics.ruff,
-
-            }
+            },
         })
         local original_show = vim.diagnostic.show
         vim.diagnostic.show = function(namespace, bufnr, diagnostics, opts)

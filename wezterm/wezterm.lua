@@ -23,7 +23,7 @@ wezterm.on('user-var-changed', function(window, pane, name, value)
     window:set_config_overrides(overrides)
 end)
 return {
-  font = wezterm.font 'Hack Nerd Font',
+  font = wezterm.font 'JetBrains Mono',
   font_size = 13.0,
   color_scheme = 'Catppuccin Macchiato',
   colors = {

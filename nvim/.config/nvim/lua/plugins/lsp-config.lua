@@ -14,7 +14,7 @@ return {
                 "emmet_language_server",
                 "eslint",
                 "html",
-            }
+            },
         },
         dependencies = {
             { "mason-org/mason.nvim", opts = {} },
@@ -47,55 +47,70 @@ return {
             lspconfig.cssls.setup({
                 capabilities = capabilities,
                 settings = {
-                    css = {validate = true, lint = { unknownAtRules = "ignore", },},
-                    scss = {validate = true, lint = { unknownAtRules = "ignore", },},
-                    less = {validate = true, lint = { unknownAtRules = "ignore", },},
+                    css = { validate = true, lint = { unknownAtRules = "ignore" } },
+                    scss = { validate = true, lint = { unknownAtRules = "ignore" } },
+                    less = { validate = true, lint = { unknownAtRules = "ignore" } },
                 },
             })
-            lspconfig.eslint.setup({
+            require("lspconfig").eslint.setup({
                 capabilities = capabilities,
                 settings = {
-                    format = { enable = false },
+                    workingDirectory = { mode = "auto" },
+                    format = { enable = false }, -- keep false
                     codeAction = { disableRuleComment = { location = "separateLine" } },
-                    formatters = {
-                        prettier = {
-                            command = "prettier",
-                            args = { "--stdin-filepath", "%filepath" },
-                        },
+                    eslint = {
+                        options = { configFile = vim.fn.getcwd() .. "/eslint.config.js" },
                     },
+                    -- remove any "formatters" section here; ESLint LSP doesn't use it
                 },
             })
+
             lspconfig.tailwindcss.setup({
                 capabilities = capabilities,
-                filetypes = { "html", "javascript", "javascriptreact", "typescript", "typescriptreact", "vue", "svelte" },
-                root_dir = lspconfig.util.root_pattern("tailwind.config.js", "tailwind.config.ts", "postcss.config.js",
-                    "postcss.config.ts"),
+                filetypes = {
+                    "html",
+                    "javascript",
+                    "javascriptreact",
+                    "typescript",
+                    "typescriptreact",
+                    "vue",
+                    "svelte",
+                },
+                root_dir = lspconfig.util.root_pattern(
+                    "tailwind.config.js",
+                    "tailwind.config.ts",
+                    "postcss.config.js",
+                    "postcss.config.ts"
+                ),
                 settings = {
                     tailwindCSS = {
                         classAttributes = {
-                            { "class", "className", }
+                            { "class", "className" },
                         },
                         experimental = {
                             classRegex = {
-                                { "class(?:Name)?=\"([^\"]*)\"" },                                                                   -- class="..."
-                                { "class(?:Name)?=\\{`([^`]*)`\\}", "class(?:Name)?=\\{\\\"([^\\\"]*)\\\"\\}" },                     -- className={`...`} / {"..."}
-                                { "clsx\\(([^\\)]*)\\)",            "classnames\\(([^\\)]*)\\)",              "cn\\(([^\\)]*)\\)" }, -- clsx()/cn()
-                                { "tw`([^`]*)`",                    "tw=\"([^\"]*)\"" },                                             -- twin / tw=""
-                                { "cva\\(([^\\)]*)\\)" },                                                                            -- cva({...})
+                                { 'class(?:Name)?="([^"]*)"' },                       -- class="..."
+                                { "class(?:Name)?=\\{`([^`]*)`\\}", 'class(?:Name)?=\\{\\"([^\\"]*)\\"\\}' }, -- className={`...`} / {"..."}
+                                {
+                                    "clsx\\(([^\\)]*)\\)",
+                                    "classnames\\(([^\\)]*)\\)",
+                                    "cn\\(([^\\)]*)\\)",
+                                },         -- clsx()/cn()
+                                { "tw`([^`]*)`",       'tw="([^"]*)"' }, -- twin / tw=""
+                                { "cva\\(([^\\)]*)\\)" }, -- cva({...})
                             },
                         },
                         colorDecorators = {
                             enable = true,
                         },
-                    }
-
-                }
+                    },
+                },
             })
             --setup emmet language server
-            lspconfig.emmet_language_server.setup({
-                capabilities = capabilities,
-                filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact", },
-            })
+            -- lspconfig.emmet_language_server.setup({
+            --     capabilities = capabilities,
+            --     filetypes = { "html", "css", "javascript", "javascriptreact", "typescriptreact" },
+            -- })
 
             -- lspconfig.tsserver.setup({
             --     capabilities = capabilities,
@@ -114,13 +129,16 @@ return {
                     gopls = {
                         diagnosticsDelay = "500ms",
                         experimentalPostfixCompletions = true, -- enable postfix completions
-                    }
-                }
+                    },
+                },
             })
             lspconfig.clangd.setup({
                 capabilities = capabilities,
             })
             lspconfig.csharp_ls.setup({
+                capabilities = capabilities,
+            })
+            lspconfig.svelte.setup({
                 capabilities = capabilities,
             })
             vim.keymap.set("n", "K", function()
@@ -137,6 +155,9 @@ return {
             vim.keymap.set("n", "<leader>gr", vim.lsp.buf.references, {})
             vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, {})
             vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, {})
+
+            vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>", { desc = "Next in quickfix" })
+            vim.keymap.set("n", "<M-k>", "<cmd>cprev<CR>", { desc = "prev in quickfix" })
         end,
     },
 }

@@ -1,8 +1,8 @@
 vim.opt.expandtab = true    -- Always insert spaces instead of tabs
-vim.opt.tabstop = 4         -- Show existing tab characters as 4 spaces
-vim.opt.softtabstop = 4     -- Tab key inserts 4 spaces
-vim.opt.shiftwidth = 4      -- Indent by 4 spaces
-vim.opt.smartindent = false -- Autoindent new lines
+vim.opt.tabstop = 4         -- Show existing tab characters as 2 spaces
+vim.opt.softtabstop = 4     -- Tab key inserts 2 spaces
+vim.opt.shiftwidth = 4      -- Indent by 2 spaces
+vim.opt.smartindent = true -- Autoindent new lines
 
 vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
