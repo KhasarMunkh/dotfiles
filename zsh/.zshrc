@@ -1,4 +1,3 @@
-
 # Pager for man
 export PAGER=less
 export MANPAGER='less -R'
