@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ---- roots to search (edit to taste) ----
+ROOTS=("$HOME/Code" "$HOME/Projects" "$HOME/dev")
+SHALLOW_ROOTS=("$HOME/.config" "$HOME/Documents/School")
+CANDIDATES=()
+for r in "${ROOTS[@]}"; do
+  [[ -d "$r" ]] && CANDIDATES+=("$r")
+done
+
+# Fallback so fzf always has something
+[[ ${#CANDIDATES[@]} -eq 0 ]] && CANDIDATES+=("$HOME")
+
+# ---- list projects (max depth 2, shallow depth 1),
+# ---- you can swap find→fd for speed 
+if command -v fd >/dev/null 2>&1; then
+  mapfile -t choices < <(
+    {
+      fd . "${CANDIDATES[@]}"     -t d -d 2
+      fd . "${SHALLOW_ROOTS[@]}"  -t d -d 1
+    } | sed "1d"
+  )
+else
+  mapfile -t choices < <(
+    {
+      find "${CANDIDATES[@]}"     -mindepth 1 -maxdepth 2 -type d
+      find "${SHALLOW_ROOTS[@]}"  -mindepth 1 -maxdepth 1 -type d
+    }
+  )
+fi
+
+[[ ${#choices[@]} -eq 0 ]] && { echo "No project directories found."; exit 1; }
+
+selected="$(
+  printf '%s\n' "${choices[@]}" | fzf \
+    --prompt='projects> ' \
+    --height=40% --border \
+    --exit-0 --select-1 \
+    --preview='
+      if [[ -d {} ]]; then
+          tree -C -L 1 {}
+      else
+          commandbat --color=always --style=numbers --line-range=1:200 {}
+      fi
+    ' \
+    --preview-window=right,60%
+)"
+
+[[ -z "${selected:-}" ]] && exit 0
+
+# ---- sanitize tmux session name: only allow [A-Za-z0-9_.-] ----
+selected_name="$(basename -- "$selected" | tr ' ' '_' | sed 's/[^A-Za-z0-9_.-]/_/g')"
+# tmux session names cannot be empty
+[[ -z "$selected_name" ]] && selected_name="proj_$(date +%s)"
+
+# convenience: attach/switch depending on whether we're inside tmux
+switch_to() {
+  if [[ -z "${TMUX:-}" ]]; then
+    tmux attach -t "$selected_name"
+  else
+    tmux switch-client -t "$selected_name"
+  fi
+}
+
+# start server if not running (harmless if already running)
+tmux start-server 2>/dev/null || true
+
+if tmux has-session -t "$selected_name" 2>/dev/null; then
+  switch_to
+else
+  # create session detached, set cwd, name first window, then add a scratch
+  tmux new-session -d -s "$selected_name" -c "$selected"
+  tmux rename-window  -t "$selected_name:1" nvim
+  tmux send-keys      -t "$selected_name:1" 'nvim' C-m
+  tmux new-window     -t "$selected_name" -n scratch -c "$selected"
+  switch_to
+fi

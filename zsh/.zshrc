@@ -4,7 +4,6 @@ export MANPAGER='less -R'
 # nice defaults for less
 export LESS='-R -M -g -i -J -w'
 export LESSHISTFILE=-
-
 # IMPORTANT: if MANPATH is set, it *overrides* defaults. Usually best to unset.
 unset MANPATH
 
@@ -58,6 +57,7 @@ export NVM_DIR="$HOME/.nvm"
 # [[ -s "$NVM_DIR/bash_completion" ]] && . "$NVM_DIR/bash_completion"
 
 export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/share/bob/nvim-bin:$HOME/.cargo/bin:$PATH"
 export PATH="$HOME/go/bin:$PATH"
 export PATH="$PATH:/home/kmunkh/.dotnet/tools"
 
@@ -76,3 +76,13 @@ bindkey -M vicmd 'v' edit-command-line
 tmux_sessionizer_widget() { tmux-sessionizer; zle reset-prompt }
 zle -N tmux_sessionizer_widget
 bindkey -M viins '^F' tmux_sessionizer_widget
+
+# how to search files with fzf + fd. Exclude some heavy directories.
+# Now, to use, just press Ctrl-T to search for files, or Alt-C to change directory.
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"'
+export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"' 
+export FZF_DEFAULT_OPTS="--ansi --info=inline --height=80% --border --preview 'bat --style=numbers --color=always {} | head -100'"
+#export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"'
+#
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH

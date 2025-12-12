@@ -1,0 +1,9 @@
+devdocs-desktop
+google-chrome
+libtexprintf
+neofetch
+omnisharp-roslyn-bin
+openconnect-sso
+postman-bin
+weylus-bin
+zen-browser-bin
