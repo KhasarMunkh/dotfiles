@@ -73,16 +73,46 @@ zle -N edit-command-line
 bindkey -M vicmd 'v' edit-command-line
 
 
-tmux_sessionizer_widget() { tmux-sessionizer; zle reset-prompt }
+tmux_sessionizer_widget() {
+  tmux-sessionizer;
+  zle reset-prompt 
+}
 zle -N tmux_sessionizer_widget
 bindkey -M viins '^F' tmux_sessionizer_widget
 
 # how to search files with fzf + fd. Exclude some heavy directories.
 # Now, to use, just press Ctrl-T to search for files, or Alt-C to change directory.
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"'
-export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"' 
+# export FZF_DEFAULT_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam" --exclude .cache --exclude ".venv"'
+# export FZF_ALT_C_COMMAND='fd --type d --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam" --exclude .cache' 
+# export FZF_ALT_C_COMMAND='fd -td --hidden --exclude .git --exclude node_modules --exclude .cache --exclude ".steam/**" --exclude ".local/share/Steam/**" --exclude ".venv/**"'
+# export FZF_DEFAULT_OPTS="--ansi --info=inline --height=80% --border --preview 'bat --style=numbers --color=always {} | head -100'"
+# export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"'
+
+# Files (fzf default + Ctrl-T)
+export FZF_DEFAULT_COMMAND="fd -tf --hidden \
+  --exclude .git \
+  --exclude node_modules \
+  --exclude .cache \
+  --exclude '.steam/**' \
+  --exclude '.local/share/Steam/**' \
+  --exclude '.local/share/Trash/**' \
+  --exclude '.venv/**'"
+
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+# Dirs (Alt-C)
+export FZF_ALT_C_COMMAND="fd -td --hidden \
+  --exclude .git \
+  --exclude node_modules \
+  --exclude .cache \
+  --exclude '.steam/**' \
+  --exclude '.local/share/Steam/**' \
+  --exclude '.local/share/Trash/**' \
+  --exclude '.venv/**'"
 export FZF_DEFAULT_OPTS="--ansi --info=inline --height=80% --border --preview 'bat --style=numbers --color=always {} | head -100'"
-#export FZF_CTRL_T_COMMAND='fd --type f --hidden --exclude .git --exclude node_modules --exclude .steam --exclude ".local/share/Steam"'
-#
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+
+# opencode
+export PATH=/home/khasar/.opencode/bin:$PATH
